@@ -1,0 +1,28 @@
+tensorflow中的卷积与转置卷积
+1、卷积：
+    这个输出大小的计算公式和填充的方式有关：假设输入大小为N1*N1,卷积大小为N2*N2,步长为S
+    如果padding=“SAME”使用的是零填充，输出大小的计算公式是N1/S
+    如果padding=“VALID”即不填充，输出大小的计算公式为ceil(（N1-N2）/S)+1
+    其中tensorflow.contrib.layers.convolution2d()中默认的填充方式为SAME
+2、转置卷积（反卷积）：
+    这个输出大小的计算公式和填充的方式有关：假设输入大小为N1*N1,卷积大小为N2*N2,步长为S
+    如果padding=“SAME”使用的是零填充，输出大小的计算公式是N1*S
+    如果padding=“VALID”即不填充，输出大小的计算公式为（N1-1）*S+N2
+    其中tensorflow.contrib.layers.convolution2d_transpose()中默认的填充方式为SAME
+
+
+GAN中的损失函数：
+1、可以发现在所有的log中都加入了TINY这个非常小的数，主要的作用是，防止log中出现0
+
+
+间断：
+互信息函数的理解
+
+
+
+存在的问题：
+1、在判别网络中最后的全连接层中，发现卷积输出与fc进行全连接时，没有进行flatten，导致fc输出为[64,7,7,1024]而非希望的[64,1024]
+2、reconstruct_mutual_info中为了得到离散和连续的列数，使用了get_shape()，而get_shape()只能是tensor使用，其为列表，，，，，
+3、在将use_batch_norm设置为True时，程序会报出如下错误：
+    ValueError: Variable discriminator/layer_0/batch_norm/discriminator_1/layer_0/batch_norm/moments/Squeeze/ExponentialMovingAverage/ does not exist,
+    or was not created with tf.get_variable(). Did you mean to set reuse=None in VarScope?
